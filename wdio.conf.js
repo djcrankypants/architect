@@ -69,29 +69,7 @@ exports.config = {
     //
     // Level of logging verbosity: trace | debug | info | warn | error | silent
     logLevel: 'silent',
-    //
-    // Set specific log levels per logger
-    // loggers:
-    // - webdriver, webdriverio
-    // - @wdio/applitools-service, @wdio/browserstack-service, @wdio/devtools-service, @wdio/sauce-service
-    // - @wdio/mocha-framework, @wdio/jasmine-framework
-    // - @wdio/local-runner, @wdio/lambda-runner
-    // - @wdio/sumologic-reporter
-    // - @wdio/cli, @wdio/config, @wdio/sync, @wdio/utils
-    // Level of logging verbosity: trace | debug | info | warn | error | silent
-    // logLevels: {
-    //     webdriver: 'info',
-    //     '@wdio/applitools-service': 'info'
-    // },
-    //
-    // If you only want to run your tests until a specific amount of tests have failed use
-    // bail (default is 0 - don't bail, run all tests).
     bail: 0,
-    //
-    // Set a base URL in order to shorten url command calls. If your `url` parameter starts
-    // with `/`, the base url gets prepended, not including the path portion of your baseUrl.
-    // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
-    // gets prepended directly.
     baseUrl: 'https://architect.stage.transloc.com',
     //
     // Default timeout for all waitFor* commands.
@@ -109,7 +87,8 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: ['chromedriver'],
-
+    chromeDriverArgs: ['--headless'], // default for ChromeDriver
+    chromeDriverLogs: './',
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
@@ -130,7 +109,7 @@ exports.config = {
     cucumberOpts: {
         require: ['./steps/given.js', './steps/when.js', './steps/then.js'],        // <string[]> (file/dir) require files before executing features
         backtrace: false,   // <boolean> show full backtrace for errors
-        requireModule: ['@babel/register'],  // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
+        requireModule: ['@babel/register', 'dotenv'],  // <string[]> ("extension:module") require files with the given EXTENSION after requiring MODULE (repeatable)
         dryRun: false,      // <boolean> invoke formatters without executing steps
         failFast: false,    // <boolean> abort the run on first failure
         format: ['pretty'], // <string[]> (type[:path]) specify the output format, optionally supply PATH to redirect formatter output (repeatable)
@@ -183,9 +162,15 @@ exports.config = {
       global.expect = chai.expect;
       global.assert = chai.assert;
       global.should = chai.should();
-// Note: we would generally have this living in CI env, local env vars, or - better still - create users on the fly.
-      this.testUser = 'qa_user_02';
-      this.testPwd = 'YMp$g9qc6Q6p1r!Rm5';
+
+      const dotenv = require('dotenv');
+      const result = dotenv.config()
+
+      if (result.error) {
+        throw result.error
+      }
+
+      console.log(result.parsed)
     },
     /**
      * Runs before a WebdriverIO command gets executed.
@@ -217,8 +202,10 @@ exports.config = {
     /**
      * Runs after a Cucumber scenario
      */
-    // afterScenario: function (uri, feature, scenario, result, sourceLocation) {
-    // },
+    afterScenario: function (uri, feature, scenario, result, sourceLocation) {
+      browser.deleteCookies();
+      browser.reloadSession();
+    },
     /**
      * Runs after a Cucumber feature
      */

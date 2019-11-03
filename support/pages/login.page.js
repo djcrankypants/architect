@@ -5,20 +5,41 @@ class Login extends Page {
     super();
     this.title = 'Log in';
     this.url = "https://login.stage.transloc.com/login/?next=https://architect.stage.transloc.com/";
+    this.elements = {
+      alert: '.login-container > .alert.alert-warning',
+      forgotPassword : '.signup-text',
+      passwordInput : '#password',
+      signupButton : '.btn[href="register"]',
+      submitButton : '.btn[type="submit"]',
+      userInput : '#username'
+    }
   }
 
-  get forgotPassword () { return $('.signup-text'); }
+  enterUsername (username) {
+    const input = $(this.elements.userInput);
+    return input.setValue(username);
+  }
 
-  get passwordInput () { return $('#password'); }
+  enterPassword (password) {
+    const input = $(this.elements.passwordInput);
+    return input.setValue(password);
+  }
 
-  get signupButton () { return $('.btn[href="register"]') }
-
-  get submitButton () { return $('.btn[type="submit"]'); }
-
-  get userInput () { return $('#username'); }
+  submitCredentials (username, password) {
+    this.enterUsername(username);
+    this.enterPassword(password);
+    $(this.elements.submitButton).click();
+  }
 
   open () {
-    super.open('https://login.stage.transloc.com/login/?next=https://architect.stage.transloc.com/');
+    super.open(process.env.loginUrl);
+  }
+
+  verifyErrorMsg (msg) {
+    const alert = $(this.elements.alert);
+    alert.waitForExist();
+    const text = alert.getText();
+    expect(text).to.equal(msg);
   }
 }
 

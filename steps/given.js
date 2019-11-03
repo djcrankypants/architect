@@ -10,10 +10,12 @@ Given(
 
 Given(
   /^I have logged in$/i, function () {
-    Login.open
-    browser.setCookies({name: 'transloc_authn_cookie',value: 'eyJ1c2VybmFtZSI6InFhX3VzZXJfMDIiLCJzaGliIjp7fSwiaXNfc3VwZXIiOmZhbHNlfQ.EKBuxg.ngx26ucqbCJtmjHP_4VRP6IhYEE'});
-    $('#app').waitForExist(5000);
-    // Login.userInput.setValue(this.testUser);
-    // Login.passwordInput.setValue(this.testPwd);
+    Login.submitCredentials(process.env.testUser, process.env.testPwd);
+  }
+);
+
+Given(
+  /^I am on the All Feeds page$/i, function () {
+    AllFeeds.verifyPage();
   }
 );
