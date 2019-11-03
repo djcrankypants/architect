@@ -1,0 +1,27 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "description": "Cat shows off fancy stuff",
+  "scripts": {
+    "test": "wdio run wdio.conf.js"
+  },
+  "author": "Cat Destroyer of Worlds",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "@wdio/cli": "^5.15.6",
+    "@wdio/cucumber-framework": "^5.15.7",
+    "@wdio/local-runner": "^5.15.6",
+    "@wdio/spec-reporter": "^5.15.2",
+    "@wdio/sync": "^5.15.7",
+    "chai": "^4.2.0",
+    "chromedriver": "^78.0.1",
+    "wdio-chromedriver-service": "^5.0.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/register": "^7.6.2"
+  }
+}
