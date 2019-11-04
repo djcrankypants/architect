@@ -87,8 +87,8 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: ['chromedriver'],
-    chromeDriverArgs: ['--headless'], // default for ChromeDriver
-    chromeDriverLogs: './',
+    // chromeDriverArgs: ['--headless'], // default for ChromeDriver
+    chromeDriverLogs: './logs/chrome',
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks.html
@@ -103,7 +103,11 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter.html
-    reporters: ['spec'],
+    reporters: ['spec', [ 'cucumberjs-json', {
+                jsonFolder: 'logs/json/',
+                language: 'en'
+            },
+        ]],
  //
     // If you are using Cucumber you need to specify the location of your step definitions.
     cucumberOpts: {
