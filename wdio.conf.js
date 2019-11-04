@@ -141,6 +141,7 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      */
     // onPrepare: function (config, capabilities) {
+    //
     // },
     /**
      * Gets executed just before initialising the webdriver session and test framework. It allows you
@@ -173,8 +174,6 @@ exports.config = {
       if (result.error) {
         throw result.error
       }
-
-      console.log(result.parsed)
     },
     /**
      * Runs before a WebdriverIO command gets executed.

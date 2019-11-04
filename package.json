@@ -17,6 +17,7 @@
     "chai": "^4.2.0",
     "chromedriver": "^78.0.1",
     "dotenv": "^8.2.0",
+    "intercept-stdout": "^0.1.2",
     "wdio-chromedriver-service": "^5.0.2",
     "wdio-cucumberjs-json-reporter": "^1.1.1"
   },
